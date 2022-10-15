@@ -12,6 +12,6 @@ class MenuService
      */
     public function fetchMenuItems(): Collection
     {
-        return MenuItem::with('children')->get();
+        return MenuItem::with('children')->limit(1)->get();
     }
 }
