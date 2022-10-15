@@ -3,7 +3,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\MenuItem;
+use App\Http\Resources\MenuResource;
+use App\Services\MenuService;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Routing\Controller as BaseController;
 
 class MenuController extends BaseController
@@ -92,7 +94,8 @@ class MenuController extends BaseController
     ]
      */
 
-    public function getMenuItems() {
-        throw new \Exception('implement in coding task 3');
+    public function getMenuItems(MenuService $menuService): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+    {
+        return MenuResource::collection($menuService->fetchMenuItems());
     }
 }
