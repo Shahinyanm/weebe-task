@@ -34,8 +34,79 @@ class CreateCinemaSchema extends Migration
      * As a user I want to know where I'm sitting on my ticket
      * As a cinema owner I dont want to configure the seating for every show
      */
+
+
+//That is not finished yet as  you see, haven't enough time for view deeper
     public function up()
     {
+        Schema::create('films', function($table) {
+            $table->increments('id');
+            $table->string('name');
+            $table->boolean('availability')->default(false);
+            $table->string('duration')->nullable();
+            $table->timestamps();
+        });
+
+        Schema::create('user_films', function($table) {
+            $table->increments('id');
+            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
+            $table->foreignId('film_id')->constrained('films')->cascadeOnDelete();
+            $table->boolean('booked')->default(false);
+            $table->timestamps();
+        });
+
+        Schema::create('showroom', function($table) {
+            $table->increments('id');
+            $table->string('name');
+            $table->timestamp('start')->nullable();
+            $table->timestamp('end')->nullable();
+            $table->foreignId('film_id')->constrained('films')->cascadeOnDelete();
+            $table->timestamps();
+        });
+
+        Schema::create('seat_types', function($table) {
+            $table->increments('id');
+            $table->string('type');
+            $table->foreignId('price_id')->constrained('prices')->cascadeOnDelete();
+            $table->timestamps();
+        });
+
+        Schema::create('seats', function($table) {
+            $table->increments('id');
+            $table->string('name');
+            $table->foreignId('seat_type_id')->constrained('seat_types')->cascadeOnDelete();
+
+            $table->timestamps();
+        });
+
+        Schema::create('prices', function($table) {
+            $table->increments('id');
+            $table->decimal('price',11,2)->default(0);
+            $table->timestamps();
+        });
+
+
+
+        Schema::create('user_seats', function($table) {
+            $table->increments('id');
+            $table->string('name');
+            $table->string('seats')->nullable();
+            $table->foreignId('seat_id')->constrained('seats')->cascadeOnDelete();
+            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
+            $table->timestamps();
+        });
+
+
+
+
+
+
+
+        Schema::create('stories', function($table) {
+            $table->increments('id');
+            $table->string('name');
+            $table->timestamps();
+        });
         throw new \Exception('implement in coding task 4, you can ignore this exception if you are just running the initial migrations.');
     }
 
